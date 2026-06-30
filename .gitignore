@@ -1,0 +1,6 @@
+qj_cloud/
+backend/.env
+front/.env
+front/node_modules/
+front/dist/
+backend/target/

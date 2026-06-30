@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.admanager.admin.mapper.AdminAuditLogMapper">
+
+    <resultMap id="auditLogMap" type="com.admanager.admin.model.AdminAuditLog">
+        <id property="id" column="id"/>
+        <result property="operatorId" column="operator_id"/>
+        <result property="operatorName" column="operator_name"/>
+        <result property="roleCode" column="role_code"/>
+        <result property="action" column="action"/>
+        <result property="resourceType" column="resource_type"/>
+        <result property="resourceId" column="resource_id"/>
+        <result property="result" column="result"/>
+        <result property="ip" column="ip"/>
+        <result property="userAgent" column="user_agent"/>
+        <result property="requestId" column="request_id"/>
+        <result property="errorMessage" column="error_message"/>
+        <result property="occurredAt" column="occurred_at"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.admanager.admin.model.AdminAuditLog">
+        INSERT INTO admin_audit_logs (
+            id, operator_id, operator_name, role_code,
+            action, resource_type, resource_id, result,
+            ip, user_agent, request_id, error_message, occurred_at
+        ) VALUES (
+            #{id}, #{operatorId}, #{operatorName}, #{roleCode},
+            #{action}, #{resourceType}, #{resourceId}, #{result},
+            #{ip}, #{userAgent}, #{requestId}, #{errorMessage}, #{occurredAt}
+        )
+    </insert>
+
+    <select id="selectPaged" resultMap="auditLogMap">
+        SELECT *
+        FROM admin_audit_logs
+        <where>
+            <if test="action != null and action != ''">
+                AND action = #{action}
+            </if>
+            <if test="operatorId != null and operatorId != ''">
+                AND operator_id = #{operatorId}
+            </if>
+            <if test="resourceType != null and resourceType != ''">
+                AND resource_type = #{resourceType}
+            </if>
+            <if test="resourceId != null and resourceId != ''">
+                AND resource_id = #{resourceId}
+            </if>
+            <if test="from != null">
+                AND occurred_at <![CDATA[>=]]> #{from}
+            </if>
+            <if test="to != null">
+                AND occurred_at <![CDATA[<=]]> #{to}
+            </if>
+        </where>
+        ORDER BY occurred_at DESC
+        LIMIT #{limit} OFFSET #{offset}
+    </select>
+
+    <select id="countPaged" resultType="long">
+        SELECT COUNT(*)
+        FROM admin_audit_logs
+        <where>
+            <if test="action != null and action != ''">
+                AND action = #{action}
+            </if>
+            <if test="operatorId != null and operatorId != ''">
+                AND operator_id = #{operatorId}
+            </if>
+            <if test="resourceType != null and resourceType != ''">
+                AND resource_type = #{resourceType}
+            </if>
+            <if test="resourceId != null and resourceId != ''">
+                AND resource_id = #{resourceId}
+            </if>
+            <if test="from != null">
+                AND occurred_at <![CDATA[>=]]> #{from}
+            </if>
+            <if test="to != null">
+                AND occurred_at <![CDATA[<=]]> #{to}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectDistinctOperators" resultType="com.admanager.admin.model.AdminAuditLog">
+        SELECT
+            operator_id,
+            MAX(operator_name) AS operator_name,
+            MAX(occurred_at) AS occurred_at
+        FROM admin_audit_logs
+        <where>
+            AND operator_id IS NOT NULL
+            AND operator_id != ''
+            <if test="from != null">
+                AND occurred_at <![CDATA[>=]]> #{from}
+            </if>
+            <if test="to != null">
+                AND occurred_at <![CDATA[<=]]> #{to}
+            </if>
+            <if test="operatorKeyword != null and operatorKeyword != ''">
+                AND (
+                    operator_id LIKE CONCAT('%', #{operatorKeyword}, '%')
+                    OR operator_name LIKE CONCAT('%', #{operatorKeyword}, '%')
+                )
+            </if>
+        </where>
+        GROUP BY operator_id
+        ORDER BY MAX(occurred_at) DESC
+        LIMIT #{limit}
+    </select>
+
+    <select id="selectDistinctActions" resultType="string">
+        SELECT action
+        FROM admin_audit_logs
+        <where>
+            AND action IS NOT NULL
+            AND action != ''
+            <if test="from != null">
+                AND occurred_at <![CDATA[>=]]> #{from}
+            </if>
+            <if test="to != null">
+                AND occurred_at <![CDATA[<=]]> #{to}
+            </if>
+        </where>
+        GROUP BY action
+        ORDER BY MAX(occurred_at) DESC
+        LIMIT #{limit}
+    </select>
+
+    <select id="selectDistinctResourceTypes" resultType="string">
+        SELECT resource_type
+        FROM admin_audit_logs
+        <where>
+            AND resource_type IS NOT NULL
+            AND resource_type != ''
+            <if test="from != null">
+                AND occurred_at <![CDATA[>=]]> #{from}
+            </if>
+            <if test="to != null">
+                AND occurred_at <![CDATA[<=]]> #{to}
+            </if>
+        </where>
+        GROUP BY resource_type
+        ORDER BY MAX(occurred_at) DESC
+        LIMIT #{limit}
+    </select>
+</mapper>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.admanager.admin.mapper.AdminUserMapper">
+
+    <resultMap id="adminUserMap" type="com.admanager.admin.model.AdminUser">
+        <id property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="passwordHash" column="password_hash"/>
+        <result property="displayName" column="display_name"/>
+        <result property="email" column="email"/>
+        <result property="status" column="status"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+        <result property="lastLoginAt" column="last_login_at"/>
+        <result property="loginFailCount" column="login_fail_count"/>
+        <result property="lockedUntil" column="locked_until"/>
+    </resultMap>
+
+    <select id="selectById" resultMap="adminUserMap">
+        SELECT * FROM admin_users WHERE id = #{id}
+    </select>
+
+    <select id="selectByUsername" resultMap="adminUserMap">
+        SELECT * FROM admin_users WHERE username = #{username}
+    </select>
+
+    <select id="selectPaged" resultMap="adminUserMap">
+        SELECT *
+        FROM admin_users
+        <where>
+            <if test="keyword != null and keyword != ''">
+                (username LIKE CONCAT('%', #{keyword}, '%') OR display_name LIKE CONCAT('%', #{keyword}, '%'))
+            </if>
+            <if test="status != null and status != ''">
+                AND status = #{status}
+            </if>
+        </where>
+        ORDER BY created_at DESC
+        LIMIT #{limit} OFFSET #{offset}
+    </select>
+
+    <select id="countPaged" resultType="long">
+        SELECT COUNT(*)
+        FROM admin_users
+        <where>
+            <if test="keyword != null and keyword != ''">
+                (username LIKE CONCAT('%', #{keyword}, '%') OR display_name LIKE CONCAT('%', #{keyword}, '%'))
+            </if>
+            <if test="status != null and status != ''">
+                AND status = #{status}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insert" parameterType="com.admanager.admin.model.AdminUser">
+        INSERT INTO admin_users (
+            id, username, password_hash, display_name, email,
+            status, created_at, updated_at, login_fail_count
+        ) VALUES (
+            #{id}, #{username}, #{passwordHash}, #{displayName}, #{email},
+            #{status}, #{createdAt}, #{updatedAt}, #{loginFailCount}
+        )
+    </insert>
+
+    <update id="updateLoginFailure">
+        UPDATE admin_users
+        SET login_fail_count = #{loginFailCount},
+            locked_until = #{lockedUntil},
+            updated_at = #{updatedAt}
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateLoginSuccess">
+        UPDATE admin_users
+        SET login_fail_count = 0,
+            locked_until = NULL,
+            last_login_at = #{lastLoginAt},
+            updated_at = #{updatedAt}
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateStatus">
+        UPDATE admin_users
+        SET status = #{status},
+            updated_at = #{updatedAt}
+        WHERE id = #{id}
+    </update>
+
+    <update id="updatePasswordHash">
+        UPDATE admin_users
+        SET password_hash = #{passwordHash},
+            updated_at = #{updatedAt}
+        WHERE id = #{id}
+    </update>
+</mapper>

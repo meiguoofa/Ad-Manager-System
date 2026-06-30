@@ -1,0 +1,28 @@
+spring:
+  config:
+    import: optional:file:.env[.properties],optional:file:./backend/.env[.properties]
+  datasource:
+    url: jdbc:mysql://localhost:3306/ad_manager?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: root
+    password: ${MYSQL_ROOT_PASSWORD:admanager_dev}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+admanager:
+  admin:
+    auth:
+      jwt-secret: ${ADMANAGER_ADMIN_JWT_SECRET:CHANGE_ME_IN_DEV}
+      bootstrap:
+        enabled: ${ADMANAGER_ADMIN_BOOTSTRAP_ENABLED:false}
+        username: ${ADMANAGER_ADMIN_BOOTSTRAP_USERNAME:}
+        password: ${ADMANAGER_ADMIN_BOOTSTRAP_PASSWORD:}
+        display-name: ${ADMANAGER_ADMIN_BOOTSTRAP_DISPLAY_NAME:Super Admin}
+        email: ${ADMANAGER_ADMIN_BOOTSTRAP_EMAIL:}
+
+logging:
+  level:
+    com.admanager: DEBUG
+    org.springframework.web: INFO

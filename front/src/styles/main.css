@@ -1,0 +1,108 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  --bg-color: #f0f2f5;
+  --bg-color-page: #ffffff;
+  --text-primary: #303133;
+  --text-regular: #606266;
+  --text-secondary: #909399;
+  --border-color: #dcdfe6;
+  --border-color-light: #e4e7ed;
+  --brand-color: #1677ff; /* Tech/Enterprise Blue */
+  --brand-hover: #4096ff;
+  --brand-active: #0958d9;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-base: 0 2px 8px 0 rgba(0, 0, 0, 0.08);
+  font-family: 'Inter', 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB',
+    'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
+  color: var(--text-primary);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-primary);
+  background: var(--bg-color);
+  -webkit-font-smoothing: antialiased;
+}
+
+button, input { font: inherit; }
+
+/* Global layout classes */
+.panel {
+  background: var(--bg-color-page);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color-light);
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+}
+
+.page-panel {
+  min-height: calc(100vh - 120px); /* Fill the rest of the workspace */
+}
+
+.section-heading {
+  margin-bottom: 32px;
+}
+
+.section-heading p {
+  margin: 0;
+  font-size: 12px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+.section-heading h2 {
+  margin: 4px 0 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.action-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.filter-pills, .action-buttons, .readiness-tags {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* Element Plus Overrides to match standard */
+.el-button {
+  border-radius: var(--radius-sm);
+  font-weight: 500;
+}
+
+.el-tag {
+  border-radius: var(--radius-sm);
+}
+
+.el-table {
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  border: 1px solid var(--border-color-light);
+}
+
+.el-table th.el-table__cell {
+  background-color: #fafafa !important;
+  color: var(--text-regular);
+  font-weight: 600;
+}
