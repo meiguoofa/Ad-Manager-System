@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.admanager.tiktok.mapper.TikTokAuthMapper">
+
+    <insert id="insert" parameterType="com.admanager.tiktok.model.TikTokAuth">
+        INSERT INTO tiktok_auth (
+            id, app_id, auth_code, state, callback_received_at,
+            advertiser_ids, access_token, refresh_token, scope,
+            exchange_status, raw_response
+        ) VALUES (
+            #{id}, #{appId}, #{authCode}, #{state}, #{callbackReceivedAt},
+            #{advertiserIds}, #{accessToken}, #{refreshToken}, #{scope},
+            #{exchangeStatus}, #{rawResponse}
+        )
+    </insert>
+
+    <update id="update" parameterType="com.admanager.tiktok.model.TikTokAuth">
+        UPDATE tiktok_auth
+        SET advertiser_ids = #{advertiserIds},
+            access_token   = #{accessToken},
+            refresh_token  = #{refreshToken},
+            scope          = #{scope},
+            exchange_status = #{exchangeStatus},
+            raw_response   = #{rawResponse}
+        WHERE id = #{id}
+    </update>
+</mapper>

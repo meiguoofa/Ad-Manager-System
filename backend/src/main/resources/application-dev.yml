@@ -21,6 +21,11 @@ admanager:
         password: ${ADMANAGER_ADMIN_BOOTSTRAP_PASSWORD:}
         display-name: ${ADMANAGER_ADMIN_BOOTSTRAP_DISPLAY_NAME:Super Admin}
         email: ${ADMANAGER_ADMIN_BOOTSTRAP_EMAIL:}
+  tiktok:
+    app-id: ${ADMANAGER_TIKTOK_APP_ID:}
+    secret: ${ADMANAGER_TIKTOK_SECRET:}
+    redirect-uri: ${ADMANAGER_TIKTOK_REDIRECT_URI:https://if-lemon.com/api/v1/tiktok/callback}
+    frontend-callback-url: ${ADMANAGER_TIKTOK_FRONTEND_CALLBACK_URL:https://if-lemon.com/tiktok/callback}
 
 logging:
   level:

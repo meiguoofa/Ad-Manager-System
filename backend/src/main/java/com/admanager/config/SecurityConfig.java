@@ -44,6 +44,8 @@ public class SecurityConfig {
             )
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.POST, "/api/v1/admin/auth/login", "/api/v1/admin/auth/refresh").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/v1/tiktok/callback").permitAll()
+                .requestMatchers("/api/v1/tiktok/auth-url").authenticated()
                 .requestMatchers("/*.html", "/css/**", "/js/**", "/favicon.ico").permitAll()
                 .requestMatchers("/api/v1/admin/**").authenticated()
                 .anyRequest().permitAll()

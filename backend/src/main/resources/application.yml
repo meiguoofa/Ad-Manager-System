@@ -16,7 +16,7 @@ spring:
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml
-  type-aliases-package: com.admanager.admin.model
+  type-aliases-package: com.admanager.admin.model,com.admanager.tiktok.model
   configuration:
     map-underscore-to-camel-case: true
 
@@ -27,6 +27,9 @@ admanager:
       refresh-token-ttl-seconds: 604800
       login-fail-threshold: 5
       lock-minutes: 30
+  tiktok:
+    api-base-url: https://business-api.tiktok.com
+    auth-base-url: https://business-api.tiktok.com/portal/auth
 
 logging:
   level:

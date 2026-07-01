@@ -7,6 +7,7 @@ import AuditView from '../views/AuditView.vue'
 import AuthRbacView from '../views/AuthRbacView.vue'
 import PlaceholderView from '../views/PlaceholderView.vue'
 import ForbiddenView from '../views/ForbiddenView.vue'
+import TikTokCallbackView from '../views/TikTokCallbackView.vue'
 
 declare module 'vue-router' {
   interface RouteMeta {
@@ -29,6 +30,12 @@ const routes: RouteRecordRaw[] = [
     path: '/403',
     name: 'forbidden',
     component: ForbiddenView,
+    meta: { public: true },
+  },
+  {
+    path: '/tiktok/callback',
+    name: 'tiktok-callback',
+    component: TikTokCallbackView,
     meta: { public: true },
   },
   {

@@ -37,7 +37,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
-        if (!isAdminApiRequest(request)) {
+        if (!isProtectedApiRequest(request)) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -84,8 +84,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         return session != null && userId.equals(session.getUserId());
     }
 
-    private boolean isAdminApiRequest(HttpServletRequest request) {
-        return request.getRequestURI() != null && request.getRequestURI().startsWith("/api/v1/admin/");
+    private boolean isProtectedApiRequest(HttpServletRequest request) {
+        String uri = request.getRequestURI();
+        return uri != null
+            && (uri.startsWith("/api/v1/admin/") || uri.startsWith("/api/v1/tiktok/"));
     }
 
     private String resolveToken(HttpServletRequest request) {
