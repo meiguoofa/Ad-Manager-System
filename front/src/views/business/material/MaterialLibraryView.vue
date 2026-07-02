@@ -47,7 +47,7 @@
         <el-button type="primary" @click="openAdd">上传素材</el-button>
       </div>
       <div class="biz-material-grid">
-        <div v-for="c in cards" :key="c.id" class="biz-material-card">
+        <div v-for="c in cards" :key="c.id" class="biz-material-card" @click="goDetail(c)">
           <div class="biz-material-cover">{{ c.type === '视频' ? '🎬' : '🖼️' }}</div>
           <div class="biz-material-info">
             <div class="biz-material-title">{{ c.name }}</div>
@@ -74,6 +74,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { UploadFilled } from '@element-plus/icons-vue'
 import PageHeader from '../../../components/PageHeader.vue'
 import BaseTabs from '../../../components/BaseTabs.vue'
@@ -85,6 +86,7 @@ import { materialApi } from '../../../api/business'
 
 const channels = ['TikTok', 'Facebook', 'Google', 'Twitter']
 const tags = ['都市', '玄幻', '甜宠', '复仇', '穿越']
+const router = useRouter()
 const tab = ref('list')
 const type = ref('')
 const channel = ref('')
@@ -101,4 +103,5 @@ onMounted(async () => {
 })
 function onPageChange() {}
 function openAdd() { addVisible.value = true }
+function goDetail(c: any) { router.push(`/material/detail/${c.id}`) }
 </script>

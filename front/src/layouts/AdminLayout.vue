@@ -145,7 +145,7 @@ const changePasswordRules: FormRules<typeof changePasswordForm> = {
 // 从路由 meta 构建菜单树
 const menuTree = computed(() => {
   const groups = new Map<string, { label: string; items: MenuNode[] }>()
-  const allRoutes = router.getRoutes().filter((r) => r.meta?.menu && r.path !== '/')
+  const allRoutes = router.getRoutes().filter((r) => r.meta?.menu)
 
   for (const r of allRoutes) {
     const meta = r.meta as any
@@ -163,18 +163,20 @@ const menuTree = computed(() => {
     if (menu.subgroup) {
       let parent = group.items.find((i) => i.label === menu.subgroup)
       if (!parent) {
-        parent = { label: menu.subgroup, icon: menu.icon, children: [] }
+        parent = { label: menu.subgroup, icon: menu.groupIcon, children: [] }
         group.items.push(parent)
+      } else if (!parent.icon && menu.groupIcon) {
+        parent.icon = menu.groupIcon
       }
       if (!parent.children) parent.children = []
       if (!menu.hidden) {
-        parent.children.push({ label: meta.title, path: r.path, icon: menu.icon, hidden: menu.hidden })
+        parent.children.push({ label: meta.title, path: r.path, hidden: menu.hidden })
       } else {
         parent.children.push({ label: meta.title, path: r.path, hidden: true })
       }
     } else {
       if (!menu.hidden) {
-        group.items.push({ label: meta.title as string, path: r.path, icon: menu.icon })
+        group.items.push({ label: meta.title as string, path: r.path, icon: menu.icon || menu.groupIcon })
       }
     }
   }
